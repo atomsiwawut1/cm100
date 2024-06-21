@@ -1,4 +1,11 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+images:{
+    dangerouslyAllowSVG: true,
+    domains: ["codemoblie.com"],
+    minimumCacheTTL: 0,
+}
+
+};
 
 export default nextConfig;
