@@ -25,10 +25,21 @@ interface SignAction {
   username: string;
   password: string;
 }
+
 export const signUp = createAsyncThunk(
   "user/signup",
   async (credential: SignAction) => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     const response = await serverService.signUp(credential);
+    return response;
+  }
+);
+
+export const signIn = createAsyncThunk(
+  "user/signin",
+  async (credential: SignAction) => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    const response = await serverService.signIn(credential);
     return response;
   }
 );
@@ -42,8 +53,32 @@ const userSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    // Register
+    builder.addCase(signUp.pending, (state) => {
+      state.status = "fetching";
+    });
+
     builder.addCase(signUp.fulfilled, (state, action) => {
       state.count++;
+      state.status = "success";
+    });
+
+    builder.addCase(signUp.rejected, (state) => {
+      state.status = "failed";
+    });
+
+    // Login
+    builder.addCase(signIn.pending, (state) => {
+      state.status = "fetching";
+    });
+
+    builder.addCase(signIn.fulfilled, (state, action) => {
+      state.count++;
+      state.status = "success";
+    });
+
+    builder.addCase(signIn.rejected, (state) => {
+      state.status = "failed";
     });
   },
 });
