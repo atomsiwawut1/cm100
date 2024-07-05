@@ -27,7 +27,7 @@ interface User {
 
 type Props = {};
 
-export default function Register({ }: Props) {
+export default function Register({}: Props) {
   const router = useRouter();
   const initialValue: User = { username: "admin", password: "" };
   const formValidateSchema = Yup.object().shape({
