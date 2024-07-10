@@ -27,6 +27,8 @@ POST http://localhost:3000/api/auth/signin HTTP/1.1
 Content-Type: application/json
 
 {
-    "username": "adminadmin2",
+    "username": "atomcbm",
     "password" : "12345"
 }
+
+
