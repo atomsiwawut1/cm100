@@ -1,27 +1,46 @@
 "use client";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect } from "react";
+import { store } from "@/src/store/store";
+import { useSelector } from "react-redux";
+import { getSession, userSelector } from "@/src/store/slices/userSlice";
+import { Box } from "@mui/material";
+import Loading from "./Loading";
 
 type Props = {};
 
 export default function AuthProvider({
-    children,
+  children,
 }: {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }) {
-    const router = useRouter();
-    const path = usePathname();
+  useEffect(() => {
+    store.dispatch(getSession());
+  }, []);
 
-    useEffect(() => {
-        initialize();
-    });
+  const path = usePathname();
+  const router = useRouter();
+  const userReducer = useSelector(userSelector);
 
-    const initialize = () => {
-        if (path == "/") {
-            router.push("/stock");
-            return null;
-        }
-    };
+  // is fetching session (eg. show spinner)
+  if (userReducer.isAuthenticating) {
+    return <Loading />;
+  }
+  // If user is not logged in, return login component
+  if (path !== "/login" && path !== "/register") {
+    if (!userReducer.isAuthenticated) {
+      router.push(`/login`);
+      return <Loading />;
+    } else if (path == "/") {
+      router.push(`/stock`); // default page after login when call root path
+      return <Loading />;
+    }
+  } else {
+    if (userReducer.isAuthenticated) {
+      router.push(`/stock`); // default page after login
+      return <Loading />;
+    }
+  }
 
-    return <div>{children}</div>;
+  return <div>{children}</div>;
 }
