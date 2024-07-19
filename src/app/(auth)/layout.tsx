@@ -1,12 +1,12 @@
 "use client";
 
-export const AuthLayout = ({
-  children, // will be a page or nested layout
-}: {
+import React from "react";
+
+interface AuthLayoutProps {
   children: React.ReactNode;
-  }) => {
-  
-    
+}
+
+const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
   return <section>{children}</section>;
 };
 
